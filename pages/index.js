@@ -1,7 +1,7 @@
 import Head from "next/head";
+import { score, hex } from "wcag-contrast";
 const colors = require("tailwindcss/colors");
 export default function IndexPage() {
-	console.log(colors);
 	return (
 		<>
 			<Head>
@@ -20,7 +20,7 @@ export default function IndexPage() {
 					their product
 				</h2>
 			</div>
-			<div className="container mx-auto">
+			<div className="container mx-auto py-6">
 				{Object.keys(colors)
 					.filter((color) => typeof colors[color] === "object")
 					.map((color) => (
@@ -31,13 +31,31 @@ export default function IndexPage() {
 							>
 								{color}
 							</h2>
-							<div className="grid grid-cols-10">
+							<div className="grid grid-cols-6 lg:grid-cols-10 gap-y-6 py-4">
 								{Object.keys(colors[color]).map((shade) => (
-									<span
-										style={{ color: colors[color][shade] }}
-									>
-										{shade}
-									</span>
+									<div className="flex justify-center flex-col">
+										<div
+											className="mx-4 w-20 h-10 text-center rounded self-center"
+											style={{
+												backgroundColor:
+													colors[color][shade],
+											}}
+										></div>
+										<div className="self-center pt-2 grid grid-cols-1">
+											<span className="text-center">
+												{shade}
+											</span>
+											<span>
+												Score:{" "}
+												{score(
+													hex(
+														"#fff",
+														colors[color][shade]
+													)
+												)}
+											</span>
+										</div>
+									</div>
 								))}
 							</div>
 						</>
