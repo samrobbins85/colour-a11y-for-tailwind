@@ -104,12 +104,14 @@ export default function IndexPage() {
 											</span>
 											<span>
 												Score:{" "}
-												{score(
-													hex(
-														background,
-														colors[color][shade]
-													)
-												)}
+												<span className="font-semibold">
+													{score(
+														hex(
+															background,
+															colors[color][shade]
+														)
+													)}
+												</span>
 											</span>
 										</div>
 									</div>
