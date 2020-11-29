@@ -2,6 +2,7 @@ import Head from "next/head";
 import { score, hex } from "wcag-contrast";
 import { useState, useEffect } from "react";
 import { Switch } from "@headlessui/react";
+import Link from "next/link";
 const colors = require("tailwindcss/colors");
 export default function IndexPage() {
 	const [enabled, setEnabled] = useState(false);
@@ -19,20 +20,16 @@ export default function IndexPage() {
 	return (
 		<div className={enabled && "bg-black text-white"}>
 			<Head>
-				<title>Next.js Template</title>
+				<title>Colour Accessibility for Tailwind CSS</title>
 				<meta
 					name="Description"
-					content="A template Next.js application"
+					content="Colour Accessibility for Tailwind CSS"
 				/>
 			</Head>
-			<div className={`pt-4 text-center ${enabled && "dark"}`}>
+			<div className={`pt-4 text-center ${enabled ? "dark" : undefined}`}>
 				<h1 className="text-4xl font-semibold">
 					Colour accessibility test for Tailwind CSS
 				</h1>
-				<h2 className="text-gray-600 dark:text-gray-300">
-					In no way associated with Tailwind Labs, apart from using
-					their product
-				</h2>
 				<h3 className="max-w-ch64 mx-auto py-4">
 					This uses the{" "}
 					<a
@@ -44,6 +41,13 @@ export default function IndexPage() {
 					accessibility ratings. You can switch between a white and
 					black background using the toggle below and the scores will
 					change for that background.
+				</h3>
+				<h3 className="py-2">
+					<Link href="/about">
+						<a className="text-blue-700 dark:text-blue-300 hover:underline">
+							About this site
+						</a>
+					</Link>
 				</h3>
 				<div className="flex justify-center">
 					<Switch.Group
@@ -83,16 +87,17 @@ export default function IndexPage() {
 							>
 								{color}
 							</h2>
-							<div className="grid grid-cols-6 lg:grid-cols-10 gap-y-6 py-4">
+							<div className="grid  grid-cols-2 sm:grid-cols-4 md:grid-cols-6 xl:grid-cols-10 gap-y-6 py-4">
 								{Object.keys(colors[color]).map((shade) => (
 									<div className="flex justify-center flex-col">
 										<div
-											className="mx-4 w-20 h-10 text-center rounded self-center"
+											className="mx-4 w-20 h-10 text-center rounded self-center text-3xl font-bold"
 											style={{
-												backgroundColor:
-													colors[color][shade],
+												color: colors[color][shade],
 											}}
-										></div>
+										>
+											A
+										</div>
 										<div className="self-center pt-2 grid grid-cols-1">
 											<span className="text-center">
 												{shade}
