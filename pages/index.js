@@ -1,9 +1,23 @@
 import Head from "next/head";
 import { score, hex } from "wcag-contrast";
+import { useState, useEffect } from "react";
+import { Switch } from "@headlessui/react";
 const colors = require("tailwindcss/colors");
 export default function IndexPage() {
+	const [enabled, setEnabled] = useState(false);
+	const [background, setBackground] = useState("#fff");
+	const [darkness, setDarkness] = useState(700);
+	useEffect(() => {
+		if (enabled) {
+			setBackground("#000");
+			setDarkness(400);
+		} else {
+			setBackground("#fff");
+			setDarkness(700);
+		}
+	}, [enabled]);
 	return (
-		<>
+		<div className={enabled && "bg-black text-white"}>
 			<Head>
 				<title>Next.js Template</title>
 				<meta
@@ -11,14 +25,52 @@ export default function IndexPage() {
 					content="A template Next.js application"
 				/>
 			</Head>
-			<div className="pt-4 text-center">
+			<div className={`pt-4 text-center ${enabled && "dark"}`}>
 				<h1 className="text-4xl font-semibold">
 					Colour accessibility test for Tailwind CSS
 				</h1>
-				<h2 className="text-gray-600">
+				<h2 className="text-gray-600 dark:text-gray-300">
 					In no way associated with Tailwind Labs, apart from using
 					their product
 				</h2>
+				<h3 className="max-w-ch64 mx-auto py-4">
+					This uses the{" "}
+					<a
+						className="text-blue-700 dark:text-blue-300 hover:underline"
+						href="https://www.w3.org/TR/WCAG20/#contrast-ratiodef"
+					>
+						WCAG
+					</a>{" "}
+					accessibility ratings. You can switch between a white and
+					black background using the toggle below and the scores will
+					change for that background.
+				</h3>
+				<div className="flex justify-center">
+					<Switch.Group
+						as="div"
+						className="flex items-center space-x-4"
+					>
+						<Switch.Label>Switch to black</Switch.Label>
+						<Switch
+							as="button"
+							checked={enabled}
+							onChange={setEnabled}
+							className={`${
+								enabled ? "bg-indigo-600" : "bg-gray-200"
+							} relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:shadow-outline`}
+						>
+							{({ checked }) => (
+								<span
+									className={`${
+										checked
+											? "translate-x-5"
+											: "translate-x-0"
+									} inline-block w-5 h-5 transition duration-200 ease-in-out transform bg-white rounded-full`}
+								/>
+							)}
+						</Switch>
+					</Switch.Group>
+				</div>
 			</div>
 			<div className="container mx-auto py-6">
 				{Object.keys(colors)
@@ -27,7 +79,7 @@ export default function IndexPage() {
 						<>
 							<h2
 								className="text-xl font-semibold"
-								style={{ color: colors[color][700] }}
+								style={{ color: colors[color][darkness] }}
 							>
 								{color}
 							</h2>
@@ -49,7 +101,7 @@ export default function IndexPage() {
 												Score:{" "}
 												{score(
 													hex(
-														"#fff",
+														background,
 														colors[color][shade]
 													)
 												)}
@@ -61,6 +113,6 @@ export default function IndexPage() {
 						</>
 					))}
 			</div>
-		</>
+		</div>
 	);
 }
