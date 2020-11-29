@@ -18,7 +18,7 @@ export default function IndexPage() {
 		}
 	}, [enabled]);
 	return (
-		<div className={enabled && "bg-black text-white"}>
+		<div className={`px-2 ${enabled && "bg-black text-white"}`}>
 			<Head>
 				<title>Colour Accessibility for Tailwind CSS</title>
 				<meta
@@ -82,12 +82,12 @@ export default function IndexPage() {
 					.map((color) => (
 						<>
 							<h2
-								className="text-xl font-semibold"
+								className="text-3xl sm:text-2xl font-semibold"
 								style={{ color: colors[color][darkness] }}
 							>
 								{color}
 							</h2>
-							<div className="grid  grid-cols-2 sm:grid-cols-4 md:grid-cols-6 xl:grid-cols-10 gap-y-6 py-4">
+							<div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 xl:grid-cols-10 gap-y-6 py-4">
 								{Object.keys(colors[color]).map((shade) => (
 									<div className="flex justify-center flex-col">
 										<div
