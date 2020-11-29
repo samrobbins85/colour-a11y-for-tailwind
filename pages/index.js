@@ -96,7 +96,7 @@ export default function IndexPage() {
 												color: colors[color][shade],
 											}}
 										>
-											A
+											CSS
 										</div>
 										<div className="self-center pt-2 grid grid-cols-1">
 											<span className="text-center">
