@@ -45,14 +45,6 @@ export default function About() {
 						</a>
 					</p>
 					<p>
-						If you like the site, I have a{" "}
-						<a href="https://www.buymeacoffee.com/samrobbins">
-							Buy me a coffee
-						</a>
-						, so you can contribute towards paying for a domain name
-						for this site
-					</p>
-					<p>
 						This site was made by{" "}
 						<a href="https://github.com/samrobbins85">
 							Sam Robbins
