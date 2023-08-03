@@ -5,20 +5,19 @@ import { Switch } from "@headlessui/react";
 import Link from "next/link";
 const colors = require("tailwindcss/colors");
 export default function IndexPage() {
-	const [enabled, setEnabled] = useState(false);
-	const [background, setBackground] = useState("#fff");
+	const [isDarkMode, setIsDarkMode] = useState(false);
 	const [darkness, setDarkness] = useState(700);
+	const [lightBackgroundHex, setLightBackgroundHex] = useState("#ffffff");
+	const [darkBackgroundHex, setDarkBackgroundHex] = useState("#000000");
 	useEffect(() => {
-		if (enabled) {
-			setBackground("#000");
+		if (isDarkMode) {
 			setDarkness(400);
 		} else {
-			setBackground("#fff");
 			setDarkness(700);
 		}
-	}, [enabled]);
+	}, [isDarkMode]);
 	return (
-		<div className={`px-2 ${enabled && "bg-black text-white"}`}>
+		<div className={`px-2 ${isDarkMode &&  "text-white"}`} style={{ backgroundColor: isDarkMode ? darkBackgroundHex : lightBackgroundHex }}>
 			<Head>
 				<title>Colour Accessibility for Tailwind CSS</title>
 				<meta
@@ -26,7 +25,7 @@ export default function IndexPage() {
 					content="Colour Accessibility for Tailwind CSS"
 				/>
 			</Head>
-			<div className={`pt-4 text-center ${enabled ? "dark" : undefined}`}>
+			<div className={`pt-4 text-center ${isDarkMode ? "dark" : undefined}`}>
 				<h1 className="text-4xl font-semibold">
 					Colour accessibility test for Tailwind CSS
 				</h1>
@@ -49,31 +48,10 @@ export default function IndexPage() {
 						</a>
 					</Link>
 				</h3>
-				<div className="flex justify-center">
-					<Switch.Group
-						as="div"
-						className="flex items-center space-x-4"
-					>
-						<Switch.Label>Switch to black</Switch.Label>
-						<Switch
-							as="button"
-							checked={enabled}
-							onChange={setEnabled}
-							className={`${
-								enabled ? "bg-indigo-600" : "bg-gray-200"
-							} relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:shadow-outline`}
-						>
-							{({ checked }) => (
-								<span
-									className={`${
-										checked
-											? "translate-x-5"
-											: "translate-x-0"
-									} inline-block w-5 h-5 transition duration-200 ease-in-out transform bg-white rounded-full`}
-								/>
-							)}
-						</Switch>
-					</Switch.Group>
+				<div className="flex flex-col sm:flex-row gap-4 justify-center">
+					<HexColourInput backgroundColour={lightBackgroundHex} setBackgroundColour={setLightBackgroundHex} />
+					<DarkModeSwitch isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+					<HexColourInput backgroundColour={darkBackgroundHex} setBackgroundColour={setDarkBackgroundHex} />
 				</div>
 			</div>
 			<div className="container mx-auto py-6">
@@ -107,7 +85,7 @@ export default function IndexPage() {
 												<span className="font-semibold">
 													{score(
 														hex(
-															background,
+															isDarkMode ? darkBackgroundHex : lightBackgroundHex,
 															colors[color][shade]
 														)
 													)}
@@ -121,5 +99,49 @@ export default function IndexPage() {
 					))}
 			</div>
 		</div>
+	);
+}
+
+function HexColourInput({ backgroundColour, setBackgroundColour }) {
+	return (
+		<div className="h-10 flex justify-between gap-2 border items-center border-slate-300 bg-white rounded-md py-1 pl-4 pr-2 focus:border-blue-500 text-black focus:outline-none focus-within:ring-2 focus-within:ring-blue-500">
+			<input className="w-24 focus:outline-none"
+				value={backgroundColour}
+				onChange={(e) => setBackgroundColour(e.target.value)}
+			/>
+			<input type="color" className="h-6 w-6 cursor-pointer"
+				value={backgroundColour}
+				onChange={(e) => setBackgroundColour(e.target.value)}
+			/>
+		</div>
+	);
+}
+
+function DarkModeSwitch({ isDarkMode, setIsDarkMode }) {
+	return (
+		<Switch.Group
+			as="div"
+			className="flex items-center space-x-4"
+		>
+			<Switch.Label>Switch to dark mode</Switch.Label>
+			<Switch
+				as="button"
+				checked={isDarkMode}
+				onChange={setIsDarkMode}
+				className={`${
+					isDarkMode ? "bg-indigo-600" : "bg-gray-200"
+				} relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:shadow-outline`}
+			>
+				{({ checked }) => (
+					<span
+						className={`${
+							checked
+								? "translate-x-5"
+								: "translate-x-0"
+						} inline-block w-5 h-5 transition duration-200 ease-in-out transform bg-white rounded-full`}
+					/>
+				)}
+			</Switch>
+		</Switch.Group>
 	);
 }
