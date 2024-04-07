@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { score, hex } from "wcag-contrast";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { Switch } from "@headlessui/react";
 import Link from "next/link";
 const colors = require("tailwindcss/colors");
@@ -17,7 +17,7 @@ export default function IndexPage() {
 		}
 	}, [isDarkMode]);
 	return (
-		<div className={`px-2 ${isDarkMode &&  "text-white"}`} style={{ backgroundColor: isDarkMode ? darkBackgroundHex : lightBackgroundHex }}>
+        <div className={`px-2 ${isDarkMode &&  "text-white"}`} style={{ backgroundColor: isDarkMode ? darkBackgroundHex : lightBackgroundHex }}>
 			<Head>
 				<title>Colour Accessibility for Tailwind CSS</title>
 				<meta
@@ -42,10 +42,12 @@ export default function IndexPage() {
 					change for that background.
 				</h3>
 				<h3 className="py-2">
-					<Link href="/about">
-						<a className="text-blue-700 dark:text-blue-300 hover:underline">
+					<Link
+                        href="/about"
+                        className="text-blue-700 dark:text-blue-300 hover:underline">
+						
 							About this site
-						</a>
+						
 					</Link>
 				</h3>
 				<div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -58,7 +60,7 @@ export default function IndexPage() {
 				{Object.keys(colors)
 					.filter((color) => typeof colors[color] === "object")
 					.map((color) => (
-						<>
+						<Fragment key={color}>
 							<h2
 								className="text-3xl sm:text-2xl font-semibold"
 								style={{ color: colors[color][darkness] }}
@@ -67,7 +69,7 @@ export default function IndexPage() {
 							</h2>
 							<div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 xl:grid-cols-10 gap-y-6 py-4">
 								{Object.keys(colors[color]).map((shade) => (
-									<div className="flex justify-center flex-col">
+									<div className="flex justify-center flex-col" key={shade}>
 										<div
 											className="mx-4 w-20 h-10 text-center rounded self-center text-3xl font-bold"
 											style={{
@@ -95,11 +97,11 @@ export default function IndexPage() {
 									</div>
 								))}
 							</div>
-						</>
+						</Fragment>
 					))}
 			</div>
 		</div>
-	);
+    );
 }
 
 function HexColourInput({ backgroundColour, setBackgroundColour }) {
